@@ -18,6 +18,14 @@ class EvaluateAll:
         self.images_path = config['images_path']
         self.annotations_path = config['annotations_path']
 
+        self.images_paths = sorted(glob.glob(self.images_path + '/*.png', recursive=True))
+        self.annot_paths = [
+            os.path.join(self.annotations_path, Path(os.path.basename(im_name)).stem) + '.txt' for im_name in self.images_paths
+        ]
+
+        self.preprocess = Preprocess()
+        self.eval = Evaluation()
+
     def get_annotations(self, annot_name):
             with open(annot_name) as f:
                 lines = f.readlines()
@@ -29,11 +37,7 @@ class EvaluateAll:
             return annot
 
     def run_evaluation(self):
-
-        im_list = sorted(glob.glob(self.images_path + '/*.png', recursive=True))
         iou_arr = []
-        preprocess = Preprocess()
-        eval = Evaluation()
 
         # Change the following detector and/or add your detectors below
         import detectors.cascade_detector.detector as cascade_detector
@@ -41,32 +45,53 @@ class EvaluateAll:
         cascade_detector = cascade_detector.Detector()
 
 
-        for im_name in im_list:
+        for img_path, annot_path in zip(self.images_paths, self.annot_paths):
 
             # Read an image
-            img = cv2.imread(im_name)
+            img = cv2.imread(img_path)
+            # cv2.imshow('win', img)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+
 
             # Apply some preprocessing
-            img = preprocess.histogram_equlization_rgb(img) # This one makes VJ worse
+            # img = preprocess.histogram_equlization_rgb(img) # This one makes VJ worse
 
             # Run the detector. It runs a list of all the detected bounding-boxes. In segmentor you only get a mask matrices, but use the iou_compute in the same way.
             prediction_list = cascade_detector.detect(img)
 
             # Read annotations:
-            annot_name = os.path.join(self.annotations_path, Path(os.path.basename(im_name)).stem) + '.txt'
-            annot_list = self.get_annotations(annot_name)
+            annot_list = self.get_annotations(annot_path)
 
             # Only for detection:
-            p, gt = eval.prepare_for_detection(prediction_list, annot_list)
+            p, gt = self.eval.prepare_for_detection(prediction_list, annot_list)
 
-            iou = eval.iou_compute(p, gt)
+            iou = self.eval.iou_compute(p, gt)
             iou_arr.append(iou)
 
         miou = np.average(iou_arr)
+
         print("\n")
         print("Average IOU:", f"{miou:.2%}")
         print("\n")
 
+        return miou
+
+    def run_evaluation_vj_detector(self, detector):
+        iou_arr = []
+
+        for img_path, annot_path in zip(self.images_paths, self.annot_paths):
+            img = cv2.imread(img_path)
+            prediction_list = detector.detect(img)
+
+            annot_list = self.get_annotations(annot_path)
+
+            p, gt = self.eval.prepare_for_detection(prediction_list, annot_list)
+
+            iou = self.eval.iou_compute(p, gt)
+            iou_arr.append(iou)
+
+        return np.mean(iou_arr)
 
 if __name__ == '__main__':
     ev = EvaluateAll()
