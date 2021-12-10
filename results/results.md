@@ -30,6 +30,11 @@ Best: 32.35% (Median, 3)
 
 Best: 34.66% (alpha: 0.75, beta: -10)
 
+3. Scaling
+
+Scaled to *360x360*: 3.02%
+Scaled to *480x480*: 5.48%
+
 ## CNN (with YOLOv4)
 
 - Run for 2000 epochs, tested using weights with best validation score during training.
