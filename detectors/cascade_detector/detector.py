@@ -7,7 +7,7 @@ class Detector:
         cv2.CascadeClassifier(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'cascades', 'haarcascade_mcs_rightear.xml'))
     ]
 
-    def __init__(self, scale_factor=1.05, min_neighbors=1):
+    def __init__(self, scale_factor=1.015, min_neighbors=2):
         self.scale_factor = scale_factor
         self.min_neighbors = min_neighbors
 

@@ -5,11 +5,21 @@ from PIL import Image
 
 
 class Detector:
-    def __init__(self):
+    def __init__(self, det_type=1):
+        if det_type == 2:
+            config_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/cfg/yolov4-ears-2x.cfg'
+            weights_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/weights/yolov4-ears-2x-best.weights'
+        elif det_type == 0.5:
+            config_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/cfg/yolov4-ears-05x.cfg'
+            weights_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/weights/yolov4-ears-05x-best.weights'
+        else:
+            config_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/cfg/yolov4-ears-1x.cfg',
+            weights_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/weights/yolov4-ears-1x-best.weights',
+
         self.det = DetectorYolov4(
             lib_darknet_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/libdarknet.so',
-            config_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/cfg/yolov4-ears.cfg',
-            weights_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/weights/yolov4-ears-1.weights',
+            config_path=config_path,
+            weights_path=weights_path,
             meta_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/cfg/ears.data'
         )
         self.net_shape = (self.det.network_width(), self.det.network_height())

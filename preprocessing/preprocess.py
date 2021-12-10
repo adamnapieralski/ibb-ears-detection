@@ -21,6 +21,37 @@ class Preprocess:
     def to_grayscale(self, img):
         return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+    def resize(self, img, dsize=(360, 360)):
+        return cv2.resize(img, dsize)
+
+    def blur(self, img, type: str, ksize: tuple = (5,5)):
+        if type == 'box':
+            return cv2.blur(img, ksize)
+        elif type == 'gaussian':
+            return cv2.GaussianBlur(img, ksize, 0)
+        elif type == 'median':
+            return cv2.medianBlur(img, ksize)
+
+    def change_contrast_brightness(self, img, alpha, beta):
+        return cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
+
+        # hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        # h, s, v = cv2.split(hsv)
+
+        # cv2.convertT
+
+        # if value >= 0:
+        #     lim = 255 - value
+        #     v[v > lim] = 255
+        #     v[v <= lim] += value
+        # else:
+        #     v[v < value] = 0
+        #     v[v >= value] += value
+
+        # final_hsv = cv2.merge((h, s, v))
+        # img = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+        # return img
+
     def histogram_equlization_rgb(self, img):
         # Simple preprocessing using histogram equalization
         # https://en.wikipedia.org/wiki/Histogram_equalization
