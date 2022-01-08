@@ -25,20 +25,6 @@ def prepare_vgg_model():
     outputs = layers.Dense(data.CLASSES_NUM, activation='softmax')(x)
     model = tf.keras.Model(inputs, outputs)
 
-    # model = Sequential()
-    # for layer in base_model.layers:
-    #     model.add(layer)
-
-    # for layer in model.layers:
-    #     layer.trainable = False
-
-    # model.add(layers.Flatten())
-    # model.add(layers.Dense(units=4096, activation='relu'))
-    # model.add(layers.Dropout(0.2))
-    # model.add(layers.Dense(units=4096, activation='relu'))
-    # model.add(layers.Dropout(0.2))
-    # model.add(layers.Dense(units=data.CLASSES_NUM, activation='softmax'))
-
     model.compile(
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
         loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
@@ -63,19 +49,6 @@ def prepare_inceptionv3_model():
 
     model = tf.keras.Model(inputs, outputs)
 
-
-    # model = Sequential()
-    # for layer in base_model.layers:
-    #     model.add(layer)
-
-    # for layer in model.layers:
-    #     layer.trainable = False
-
-    # model.add(layers.Flatten())
-    # model.add(layers.Dense(units=1024, activation='relu'))
-    # model.add(layers.Dropout(0.2))
-    # model.add(layers.Dense(units=data.CLASSES_NUM, activation='softmax'))
-
     model.compile(
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
         loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
@@ -99,14 +72,6 @@ def prepare_resnet50_model():
     outputs = layers.Dense(data.CLASSES_NUM, activation='softmax')(x)
 
     model = tf.keras.Model(inputs, outputs)
-    # model = Sequential()
-    # for layer in base_model.layers:
-    #     model.add(layer)
-
-    # for layer in model.layers:
-    #     layer.trainable = False
-
-    # model.add(layers.Dense(units=data.CLASSES_NUM, activation='softmax'))
 
     model.compile(
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
@@ -138,6 +103,6 @@ if __name__ == '__main__':
     inception_model = prepare_inceptionv3_model()
     resnet_model = prepare_inceptionv3_model()
 
-    train_model(vgg_model, 2, 'output/vgg_model/ckpt', 'output/vgg_model_logs_4.csv', 'perfect')
-    train_model(inception_model, 2, 'output/inception_model/ckpt', 'output/inception_model_logs_4.csv', 'perfect')
-    train_model(resnet_model, 2, 'output/resnet_model/ckpt', 'output/resnet_model_logs_4.csv', 'perfect')
+    train_model(vgg_model, 30, 'output/vgg_model/ckpt', 'output/vgg_model_logs_4.csv', 'perfect')
+    train_model(inception_model, 30, 'output/inception_model/ckpt', 'output/inception_model_logs_4.csv', 'perfect')
+    train_model(resnet_model, 30, 'output/resnet_model/ckpt', 'output/resnet_model_logs_4.csv', 'perfect')

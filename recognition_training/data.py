@@ -7,28 +7,6 @@ RESCALE = 1./255
 BATCH_SIZE = 25
 CLASSES_NUM = 100
 
-# train_gen = ImageDataGenerator(
-#     rescale=RESCALE,
-#     shear_range=0.2,
-#     zoom_range=0.1,
-#     horizontal_flip=True
-# )
-# train_gen = train_gen.flow_from_directory(
-#     '../data/perfectly_detected_ears/train_dir',
-#     target_size=IMG_SIZE,
-#     batch_size=25,
-#     shuffle=True,
-#     class_mode='sparse',
-# )
-
-# test_gen = ImageDataGenerator(rescale=RESCALE)
-# test_gen = test_gen.flow_from_directory(
-#     '../data/perfectly_detected_ears/test_dir',
-#     target_size=IMG_SIZE,
-#     batch_size=25,
-#     shuffle=True,
-#     class_mode='sparse',
-# )
 
 def get_train_generator(det_type='perfect', seed=123, batch_size=25):
     gen = ImageDataGenerator(
