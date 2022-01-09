@@ -16,27 +16,30 @@ def get_train_generator(det_type='perfect', seed=123, batch_size=25):
         horizontal_flip=True
     )
     if det_type == 'perfect':
-        return gen.flow_from_directory(
-            '../data/perfectly_detected_ears/train_dir',
-            target_size=IMG_SIZE,
-            batch_size=batch_size,
-            shuffle=True,
-            class_mode='sparse',
-            seed=seed
-        )
+        imgs_dir = '../data/perfectly_detected_ears/train_dir'
     else:
-        pass
+        imgs_dir = '../data/ears/detected/train_dir'
+
+    return gen.flow_from_directory(
+        imgs_dir,
+        target_size=IMG_SIZE,
+        batch_size=batch_size,
+        shuffle=True,
+        class_mode='sparse',
+        seed=seed
+    )
 
 def get_test_generator(det_type='perfect', seed=123, batch_size=25):
     gen = ImageDataGenerator(rescale=RESCALE)
     if det_type == 'perfect':
-        return gen.flow_from_directory(
-            '../data/perfectly_detected_ears/test_dir',
-            target_size=IMG_SIZE,
-            batch_size=batch_size,
-            shuffle=True,
-            class_mode='sparse',
-            seed=seed
-        )
+        imgs_dir = '../data/perfectly_detected_ears/test_dir'
     else:
-        pass
+        imgs_dir = '../data/ears/detected/test_dir'
+    return gen.flow_from_directory(
+        imgs_dir,
+        target_size=IMG_SIZE,
+        batch_size=batch_size,
+        shuffle=True,
+        class_mode='sparse',
+        seed=seed
+    )
