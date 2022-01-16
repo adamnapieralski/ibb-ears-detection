@@ -13,6 +13,7 @@ def get_train_generator(det_type='perfect', seed=123, batch_size=25):
         rescale=RESCALE,
         shear_range=0.2,
         zoom_range=0.1,
+        brightness_range=(0.3, 0.7),
         horizontal_flip=True
     )
     if det_type == 'perfect':
