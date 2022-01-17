@@ -1,0 +1,92 @@
+{
+  "vgg16": {
+    "perfect_perfect": {
+      "accuracy": 0.2240000069141388,
+      "accuracy_rank_5": 0.36399999260902405
+    },
+    "perfect_detected": {
+      "accuracy": 0.18400000035762787,
+      "accuracy_rank_5": 0.3440000116825104
+    },
+    "detected_perfect": {
+      "accuracy": 0.20800000429153442,
+      "accuracy_rank_5": 0.36800000071525574
+    },
+    "detected_detected": {
+      "accuracy": 0.19599999487400055,
+      "accuracy_rank_5": 0.3440000116825104
+    }
+  },
+  "resnet18": {
+    "perfect_perfect": {
+      "accuracy": 0.23600000143051147,
+      "accuracy_rank_5": 0.37599998712539673
+    },
+    "perfect_detected": {
+      "accuracy": 0.13600000739097595,
+      "accuracy_rank_5": 0.2879999876022339
+    },
+    "detected_perfect": {
+      "accuracy": 0.15199999511241913,
+      "accuracy_rank_5": 0.3440000116825104
+    },
+    "detected_detected": {
+      "accuracy": 0.1599999964237213,
+      "accuracy_rank_5": 0.328000009059906
+    }
+  },
+  "resnet34": {
+    "perfect_perfect": {
+      "accuracy": 0.19200000166893005,
+      "accuracy_rank_5": 0.37599998712539673
+    },
+    "perfect_detected": {
+      "accuracy": 0.12800000607967377,
+      "accuracy_rank_5": 0.2759999930858612
+    },
+    "detected_perfect": {
+      "accuracy": 0.1599999964237213,
+      "accuracy_rank_5": 0.3160000145435333
+    },
+    "detected_detected": {
+      "accuracy": 0.18400000035762787,
+      "accuracy_rank_5": 0.328000009059906
+    }
+  },
+  "inceptionv3": {
+    "perfect_perfect": {
+      "accuracy": 0.20800000429153442,
+      "accuracy_rank_5": 0.3319999873638153
+    },
+    "perfect_detected": {
+      "accuracy": 0.11999999731779099,
+      "accuracy_rank_5": 0.2639999985694885
+    },
+    "detected_perfect": {
+      "accuracy": 0.12399999797344208,
+      "accuracy_rank_5": 0.2720000147819519
+    },
+    "detected_detected": {
+      "accuracy": 0.15199999511241913,
+      "accuracy_rank_5": 0.30799999833106995
+    }
+  },
+  "xception": {
+    "perfect_perfect": {
+      "accuracy": 0.30399999022483826,
+      "accuracy_rank_5": 0.46000000834465027
+    },
+    "perfect_detected": {
+      "accuracy": 0.23999999463558197,
+      "accuracy_rank_5": 0.4320000112056732
+    },
+    "detected_perfect": {
+      "accuracy": 0.2160000056028366,
+      "accuracy_rank_5": 0.3919999897480011
+    },
+    "detected_detected": {
+      "accuracy": 0.25200000405311584,
+      "accuracy_rank_5": 0.40400001406669617
+    }
+  }
+}

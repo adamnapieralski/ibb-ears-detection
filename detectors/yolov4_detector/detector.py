@@ -13,8 +13,8 @@ class Detector:
             config_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/cfg/yolov4-ears-05x.cfg'
             weights_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/weights/yolov4-ears-05x-best.weights'
         else:
-            config_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/cfg/yolov4-ears-1x.cfg',
-            weights_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/weights/yolov4-ears-1x-best.weights',
+            config_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/cfg/yolov4-ears-1x.cfg'
+            weights_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/weights/yolov4-ears-1x-best.weights'
 
         self.det = DetectorYolov4(
             lib_darknet_path='/Users/adamnapieralski/Projects/private/erasmus/image-based-biometry/task_2/yolov4/libdarknet.so',
