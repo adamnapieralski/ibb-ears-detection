@@ -11,7 +11,7 @@ ResNet34, _ = Classifiers.get('resnet34')
 ResNet18, _ = Classifiers.get('resnet18')
 Xception, _ = Classifiers.get('xception')
 
-import data
+import recognition_data as data
 
 
 def prepare_vgg16_model():

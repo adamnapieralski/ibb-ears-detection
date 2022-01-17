@@ -1,5 +1,6 @@
 data/
 *.weights
+results/recognition/models
 
 .DS_Store
 
