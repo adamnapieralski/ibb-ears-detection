@@ -18,7 +18,7 @@ def plot_training_accuracies():
     }
     for det_type in ['perfect', 'detected']:
         for m_name in MODEL_NAMES:
-            logs_path = f'output/{m_name}_model_{det_type}_logs.csv'
+            logs_path = f'results/recognition/models/{m_name}_model_{det_type}_logs.csv'
             logs = np.loadtxt(logs_path, dtype=object)
             figs[det_type]['train_acc'][1].plot(logs[1:,1].astype(float), label=m_name)
             figs[det_type]['val_acc'][1].plot(logs[1:,3].astype(float), label=m_name)
@@ -31,10 +31,10 @@ def plot_training_accuracies():
             figs[det_type][acc_type][1].set_title(
                 ('Training' if acc_type == 'train_acc' else 'Validation') + f' accuracy scores - {det_type} ears data'
             )
-            figs[det_type][acc_type][0].savefig(f'output/fig.{acc_type}.{det_type}.png', facecolor='white')
+            figs[det_type][acc_type][0].savefig(f'results/recognition/figs/fig.{acc_type}.{det_type}.png', facecolor='white')
 
 def plot_test_accuracies():
-    with open('output/evaluation_results.json', 'rt') as f:
+    with open('results/recognition/evaluation_results.json', 'rt') as f:
         res = json.load(f)
 
     for det_type_weights in ['perfect', 'detected']:
@@ -55,7 +55,7 @@ def plot_test_accuracies():
             ax.set_xlabel('Model')
             ax.set_ylabel('Accuracy [%]')
             ax.set_title(f'Test accuracy scores (Rank-1, Rank-5)\nTrain: {det_type_weights} ears, Test: {det_type_eval} ears')
-            fig.savefig(f'output/fig.test.{det_type_weights}_{det_type_eval}.png', facecolor='white')
+            fig.savefig(f'results/recognition/figs/fig.test.{det_type_weights}_{det_type_eval}.png', facecolor='white')
 
 if __name__ == '__main__':
     plot_training_accuracies()

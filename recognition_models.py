@@ -119,17 +119,17 @@ def evaluate_all():
         for det_type_weight in ['perfect', 'detected']:
             for det_type_eval in ['perfect', 'detected']:
                 model = mod['model']
-                model.load_weights(f'output/models/{mod["name"]}_model_{det_type_weight}/ckpt').expect_partial()
+                model.load_weights(f'results/recognition/models/{mod["name"]}_model_{det_type_weight}/ckpt').expect_partial()
                 ev = model.evaluate(data.get_test_generator(det_type=det_type_eval), return_dict=True)
                 del ev['loss']
                 results[mod['name']][det_type_weight + '_' + det_type_eval] = ev
-        with open('output/evaluation_results.json', 'wt') as f:
+        with open('results/recognition/evaluation_results.json', 'wt') as f:
             json.dump(results, f, indent=2)
 
 def train_all():
     for mod in get_models_collection():
         for det_type in ['perfect', 'detected']:
-            train_model(mod['model'], 100, f'output/models/{mod["name"]}_model_{det_type}/ckpt', f'output/{mod["name"]}_model_{det_type}_logs.csv', det_type)
+            train_model(mod['model'], 100, f'results/recognition/models/{mod["name"]}_model_{det_type}/ckpt', f'results/recognition/{mod["name"]}_model_{det_type}_logs.csv', det_type)
 
 if __name__ == '__main__':
     train_all()

@@ -17,9 +17,9 @@ def get_train_generator(det_type='perfect', seed=123, batch_size=25):
         horizontal_flip=True
     )
     if det_type == 'perfect':
-        imgs_dir = '../data/perfectly_detected_ears/train_dir'
+        imgs_dir = 'data/perfectly_detected_ears/train_dir'
     else:
-        imgs_dir = '../data/ears/detected/train_dir'
+        imgs_dir = 'data/ears/detected/train_dir'
 
     return gen.flow_from_directory(
         imgs_dir,
@@ -33,9 +33,9 @@ def get_train_generator(det_type='perfect', seed=123, batch_size=25):
 def get_test_generator(det_type='perfect', seed=123, batch_size=25):
     gen = ImageDataGenerator(rescale=RESCALE)
     if det_type == 'perfect':
-        imgs_dir = '../data/perfectly_detected_ears/test_dir'
+        imgs_dir = 'data/perfectly_detected_ears/test_dir'
     else:
-        imgs_dir = '../data/ears/detected/test_dir'
+        imgs_dir = 'data/ears/detected/test_dir'
     return gen.flow_from_directory(
         imgs_dir,
         target_size=IMG_SIZE,
