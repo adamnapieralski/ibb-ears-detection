@@ -55,4 +55,4 @@ Evaluated models trained on perfect ears dataset, on both perfect and detected t
 | Perfect | ![](fig/fig.test.perfect_perfect.png)  | ![](fig/fig.test.detected_perfect.png)  |
 | Detected| ![](fig/fig.test.perfect_detected.png) | ![](fig/fig.test.detected_detected.png) |
 
-Xception found to be the best performing.
+Xception found to be the best performing. InceptionV3 achieved the worst scores. Interestingly, VGG16 and ResNets were performing similarly and in different order, depending on evaluation configuration.
