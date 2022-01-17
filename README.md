@@ -1,10 +1,12 @@
-# ibb-ears-detection
+# ibb-ears-detection-recognition
 
-Project for Image Based Biometry regarding ears detection pipeline.
+Project for Image Based Biometry handling ears detection+recognition pipeline.
 
 ## Overview
 Detection using classical Viola-Jones cascade detector and CNN based one (using YOLOv4).
 
-## Results
+Recognition based on multiple CNN architectures (ResNet[18,34], VGG16, InceptionV3, Xception).
 
-See [results/results.md](results/results.md).
+## Results
+- [Detection results](results/detection/results.md)
+- [Recognition results](results/recognition/results.md)
