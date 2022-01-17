@@ -1,10 +1,10 @@
+import json
 import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras import Model, Sequential
 
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.applications.inception_v3 import InceptionV3
-from tensorflow.keras.applications import ResNet50
 
 from classification_models.tfkeras import Classifiers
 ResNet34, _ = Classifiers.get('resnet34')
@@ -25,14 +25,8 @@ def prepare_vgg16_model():
     x = layers.Dense(4096, activation='relu')(x)
     x = layers.Dense(4096, activation='relu')(x)
     outputs = layers.Dense(data.CLASSES_NUM, activation='softmax')(x)
-    model = tf.keras.Model(inputs, outputs)
 
-    model.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
-        loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-        metrics = ['accuracy'])
-
-    return model
+    return prepare_model(inputs, outputs)
 
 def prepare_inceptionv3_model():
     base_model = InceptionV3(
@@ -43,32 +37,7 @@ def prepare_inceptionv3_model():
     x = layers.GlobalAveragePooling2D()(x)
     outputs = layers.Dense(data.CLASSES_NUM, activation='softmax')(x)
 
-    model = tf.keras.Model(inputs, outputs)
-
-    model.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
-        loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-        metrics = ['accuracy'])
-
-    return model
-
-def prepare_resnet50_model():
-    base_model = ResNet50(
-        input_shape = (data.IMG_SIZE[0], data.IMG_SIZE[1], 3), include_top = False, weights = 'imagenet')
-
-    inputs = tf.keras.Input(shape=data.INPUT_SHAPE)
-    x = base_model(inputs)
-    x = layers.GlobalAveragePooling2D()(x)
-    outputs = layers.Dense(data.CLASSES_NUM, activation='softmax')(x)
-
-    model = tf.keras.Model(inputs, outputs)
-
-    model.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
-        loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-        metrics = ['accuracy'])
-
-    return model
+    return prepare_model(inputs, outputs)
 
 def prepare_resnet18_model():
     base_model = ResNet18(
@@ -79,14 +48,7 @@ def prepare_resnet18_model():
     x = layers.GlobalAveragePooling2D()(x)
     outputs = layers.Dense(data.CLASSES_NUM, activation='softmax')(x)
 
-    model = tf.keras.Model(inputs, outputs)
-
-    model.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
-        loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-        metrics = ['accuracy'])
-
-    return model
+    return prepare_model(inputs, outputs)
 
 def prepare_resnet34_model():
     base_model = ResNet34(
@@ -97,14 +59,7 @@ def prepare_resnet34_model():
     x = layers.GlobalAveragePooling2D()(x)
     outputs = layers.Dense(data.CLASSES_NUM, activation='softmax')(x)
 
-    model = tf.keras.Model(inputs, outputs)
-
-    model.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
-        loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-        metrics = ['accuracy'])
-
-    return model
+    return prepare_model(inputs, outputs)
 
 def prepare_xception_model():
     base_model = Xception(
@@ -115,12 +70,18 @@ def prepare_xception_model():
     x = layers.GlobalAveragePooling2D()(x)
     outputs = layers.Dense(data.CLASSES_NUM, activation='softmax')(x)
 
+    return prepare_model(inputs, outputs)
+
+def prepare_model(inputs, outputs):
     model = tf.keras.Model(inputs, outputs)
 
     model.compile(
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001),
         loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
-        metrics = ['accuracy'])
+        metrics = [
+            'accuracy',
+            tf.keras.metrics.SparseTopKCategoricalAccuracy(k=5, name='accuracy_rank_5')
+        ])
 
     return model
 
@@ -141,25 +102,35 @@ def train_model(model, epochs, checkpoint_filepath, csv_filepath, det_type):
         callbacks=[model_checkpoint_callback, csv_logger_callback]
     )
 
+def get_models_collection():
+    return [
+        {'name': 'vgg16', 'model': prepare_vgg16_model()},
+        {'name': 'resnet18', 'model': prepare_resnet18_model()},
+        {'name': 'resnet34', 'model': prepare_resnet34_model()},
+        {'name': 'inceptionv3', 'model': prepare_inceptionv3_model()},
+        {'name': 'xception', 'model': prepare_xception_model()},
+    ]
+
+def evaluate_all():
+    results = {}
+
+    for mod in get_models_collection():
+        results[mod['name']] = {}
+        for det_type_weight in ['perfect', 'detected']:
+            for det_type_eval in ['perfect', 'detected']:
+                model = mod['model']
+                model.load_weights(f'output/models/{mod["name"]}_model_{det_type_weight}/ckpt').expect_partial()
+                ev = model.evaluate(data.get_test_generator(det_type=det_type_eval), return_dict=True)
+                del ev['loss']
+                results[mod['name']][det_type_weight + '_' + det_type_eval] = ev
+        with open('output/evaluation_results.json', 'wt') as f:
+            json.dump(results, f, indent=2)
+
 def train_all():
-    for det_type in ['perfect', 'detected']:
-        resnet18_model = prepare_resnet18_model()
-        train_model(resnet18_model, 100, f'output/resnet18_model_{det_type}/ckpt', 'output/resnet18_model_{det_type}_logs.csv', det_type)
-
-        resnet34_model = prepare_resnet34_model()
-        train_model(resnet34_model, 100, f'output/resnet34_model_{det_type}/ckpt', 'output/resnet34_model_{det_type}_logs.csv', det_type)
-
-        resnet50_model = prepare_resnet50_model()
-        train_model(resnet50_model, 100, f'output/resnet50_model_{det_type}/ckpt', 'output/resnet50_model_{det_type}_logs.csv', det_type)
-
-        inceptionv3_model = prepare_inceptionv3_model()
-        train_model(inceptionv3_model, 100, f'output/inceptionv3_model_{det_type}/ckpt', 'output/inceptionv3_model_{det_type}_logs.csv', det_type)
-
-        vgg16_model = prepare_vgg16_model()
-        train_model(vgg16_model, 100, f'output/vgg16_model_{det_type}/ckpt', 'output/vgg16_model_logs_{det_type}.csv', det_type)
-
-        xception_model = prepare_xception_model()
-        train_model(xception_model, 100, f'output/xception_model_{det_type}/ckpt', 'output/xception_model_{det_type}_logs.csv', det_type)
+    for mod in get_models_collection():
+        for det_type in ['perfect', 'detected']:
+            train_model(mod['model'], 100, f'output/models/{mod["name"]}_model_{det_type}/ckpt', f'output/{mod["name"]}_model_{det_type}_logs.csv', det_type)
 
 if __name__ == '__main__':
     train_all()
+    evaluate_all()
