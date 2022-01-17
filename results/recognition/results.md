@@ -32,7 +32,7 @@ Applied to training dataset only with randomly applied transformations:
 - shear range: (-0.2, 0.2)
 - zoom range: (0.9, 1.1)
 - brightness range: (0.3, 0.7)
-- horizontal fliping
+- horizontal flipping
 
 ### Accuracy on train dataset
 | Perfect | Detected |
